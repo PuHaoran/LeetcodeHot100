@@ -30,32 +30,29 @@
 输出：true
 """
 """ 题解
-栈。从前向后遍历，若为左括号，则直接入栈；若为右括号，则判断是否匹配，若匹配则出栈。
+栈。从前向后遍历，若为左括号，则直接入栈；若为右括号，则判断是否匹配，若匹配则出栈，不匹配则False。若最后栈不为空则False。
 """
 
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        s = list(s)
+        t = -1
+        stack = [0] * 10010
         d = {
             ')': '(',
             ']': '[',
             '}': '{'
         }
-        top = -1
-        stack = [0] * 10010
-        for i in range(len(s)):
-            if s[i] in d.values():
-                top += 1
-                stack[top] = s[i]
+        for c in s:
+            if c in ['(', '[', '{']:
+                t += 1
+                stack[t] = c
             else:
-                if top == -1:
-                    return False
-                if stack[top] == d[s[i]]:
-                    top -= 1
+                if t != -1 and stack[t] == d[c]:
+                    t -= 1
                 else:
                     return False
-        if top == -1:
+        if t == -1:
             return True
         return False
 

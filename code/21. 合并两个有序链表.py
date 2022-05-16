@@ -28,6 +28,8 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+
+
 class Solution:
     def mergeTwoLists(self, list1, list2):
         l = ListNode(-1)
@@ -42,3 +44,25 @@ class Solution:
             p = p.next
         p.next = list1 if list1 else list2
         return l.next
+
+
+"""
+递归题解，node.next = f(node.next, other_node)，递归边界是某一条为None。
+"""
+
+
+class Solution:
+    def mergeTwoLists(self, list1, list2):
+        def get_list(list1, list2):
+            if not list1:
+                return list2
+            elif not list2:
+                return list1
+            else:
+                if list1.val < list2.val:
+                    list1.next = get_list(list1.next, list2)
+                    return list1
+                else:
+                    list2.next = get_list(list1, list2.next)
+                    return list2
+        return get_list(list1, list2)

@@ -18,7 +18,7 @@
 输出：[]
 """
 """ 题解
-DFS。数组mark标记走过的路，dfs函数传递u作为递归终止条件，遍历当前u步的所有可能，临时变量t保存路径并mark=1，递归并回溯。
+DFS。数组mark标记走过的路，dfs函数传递u作为递归终止条件，遍历当前u步的所有可能，临时变量temp保存路径并mark=1，递归并回溯。
 """
 
 
@@ -34,28 +34,27 @@ class Solution:
             '8': ['t', 'u', 'v'],
             '9': ['w', 'x', 'y', 'z']
         }
+        if not len(digits):
+            return []
         mark = [[0]*4 for _ in range(4)]
-        res = []
-        t = []
-        digits = list(digits)
-        if len(digits) == 0:
-            return res
+        res, temp = [], []
+
         def dfs(u):
             if u == len(digits):
-                res.append(''.join(t))
+                res.append(''.join(temp))
                 return
             c = digits[u]
             for i in range(len(d[c])):
                 if not mark[u][i]:
+                    temp.append(d[c][i])
                     mark[u][i] = 1
-                    t.append(d[c][i])
                     dfs(u+1)
-                    t.pop()
+                    temp.pop()
                     mark[u][i] = 0
         dfs(0)
         return res
 
 
-digits = ''
+digits = '234'
 solution = Solution()
 print(solution.letterCombinations(digits))
