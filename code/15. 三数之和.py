@@ -20,7 +20,8 @@
 输出：[]
 """
 """ 题解
-排序+双指针。从前向后遍历数组，第一个元素为i，终点为j。若item+nums[i]+nums[j]>0，则j--；若item+nums[i]+nums[j]<0，则i++。
+排序+双指针。从前向后遍历数组，令当前元素为k，然后通过前后双指针在[k+1:]范围内找到二数之和为item=0-nums[k]的元素；
+令前后双指针为i，j。若item+nums[i]+nums[j]==0，则i++,j--；若item+nums[i]+nums[j]>0，则j--；若item+nums[i]+nums[j]<0，则i++。
 """
 
 
@@ -29,22 +30,20 @@ class Solution:
         if len(nums) < 3:
             return []
         nums = sorted(nums)
-        n = len(nums)-1
         res = []
-        for k in range(len(nums)):
-            if nums[k] > 0:
-                continue
-            i, j = k+1, n
+        for k in range(len(nums)-1):
+            t = 0-nums[k]
+            i, j = k+1, len(nums)-1
             while i < j:
-                if nums[k] + nums[i] + nums[j] == 0:
+                if nums[i] + nums[j] == t:
                     if [nums[k], nums[i], nums[j]] not in res:
                         res.append([nums[k], nums[i], nums[j]])
                     i += 1
                     j -= 1
-                elif nums[k] + nums[i] + nums[j] > 0:
-                    j -= 1
-                else:
+                elif nums[i] + nums[j] < t:
                     i += 1
+                else:
+                    j -= 1
         return res
 
 
