@@ -18,7 +18,7 @@
 解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
 """
 """ 题解
-法一合并两个数组并排序，然后取中间数或中间两数均值。
+合并两个数组并排序，然后取中间数或中间两数均值。
 """
 
 
@@ -48,3 +48,38 @@ nums1 = []
 nums2 = []
 solution = Solution()
 print(solution.findMedianSortedArrays(nums1, nums2))
+
+""" 题解
+分治解法。将原问题转化为求两数组第k小的数，然后分别考虑两数组长度和奇偶情况，奇数取中间值，偶数取中间两数均值。
+重点是分治法求两数组第k小的数，因为是排过序的，若A的k//2元素小于B的k//2元素，则A的前半部分可以舍弃，原问题变为求k-(k//2)小的数；否则舍弃B的前半部分。
+当A数组为空或k=1时递归终止。
+"""
+
+
+class Solution:
+    def findMedianSortedArrays(self, nums1, nums2) -> float:
+        def find(nums1, i, nums2, j, k):
+            """ 从两个数组nums1[i:],nums2[j:]中寻找第k小的数 """
+            if len(nums1)-i > len(nums2)-j:
+                return find(nums2, j, nums1, i, k)
+            # 第一种边界情况，第一个数组为空，则直接返回第二个数组的第k个数
+            if i == len(nums1):
+                return nums2[j+k-1]
+            # 第二种边界情况，寻找第k=1小的数
+            if k == 1:
+                if len(nums1) == 0:
+                    return nums2[j]
+                return min(nums1[i], nums2[j])
+            si, sj = min(i + k // 2, len(nums1)), j + k - k // 2  # 考虑k奇偶的情况，这里不一定均分
+            if nums1[si-1] < nums2[sj-1]:
+                return find(nums1, si, nums2, j, k-(si-i))
+            else:
+                return find(nums1, i, nums2, sj, k-(sj-j))
+
+        cnt = len(nums1) + len(nums2)
+        if cnt & 1:
+            return find(nums1, 0, nums2, 0, cnt // 2 + 1)
+        else:
+            l = find(nums1, 0, nums2, 0, cnt // 2)
+            r = find(nums1, 0, nums2, 0, cnt // 2 + 1)
+            return (l + r) / 2.0
