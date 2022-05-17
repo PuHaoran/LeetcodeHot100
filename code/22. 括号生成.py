@@ -14,32 +14,29 @@
 输出：["()"]
 """
 """ 题解
-DFS+剪枝。u为递归函数终止条件，mark数组记录正反括号次数，若(数量<)数量则提前终止递归，遍历所有可能条件，递归并回溯。
+DFS+剪枝。u为递归函数终止条件，mark数组记录正反括号次数，若正括号数量<反括号数量或正括号数量>最大数量n则提前终止递归，遍历所有可能条件，递归并回溯。
 """
 
 
 class Solution:
     def generateParenthesis(self, n: int):
+        res, temp = [], []
         arr = ['(', ')']
-        res = []
-        t = []
-        mark = [0, 0]
+        cnt = [0, 0]
 
         def dfs(u):
             # 剪枝
-            if mark[1] > mark[0]:
+            if cnt[1] > cnt[0] or cnt[0] > n:
                 return
-            if u == n*2:
-                if mark[0] == mark[1]:
-                    res.append(''.join(t))
+            if u == 2*n:
+                res.append(''.join(temp))
                 return
             for i in range(len(arr)):
-                t.append(arr[i])
-                mark[i] += 1
+                temp.append(arr[i])
+                cnt[i] += 1
                 dfs(u+1)
-                mark[i] -= 1
-                t.pop()
-
+                cnt[i] -= 1
+                temp.pop()
         dfs(0)
         return res
 
