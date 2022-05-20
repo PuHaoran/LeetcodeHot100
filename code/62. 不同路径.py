@@ -31,10 +31,7 @@ o o
 1 3
 """
 """ 题解
-法一：DFS会超时。
-法二：
-①状态表达。f(i,j)当前有几种路径。
-②状态转移。f(i,j)=f(i-1,j)+f(i,j-1)
+DP。①状态表达。f(i,j)当前有几种路径。②状态转移。f(i,j)=f(i-1,j)+f(i,j-1)。
 """
 
 
@@ -52,24 +49,26 @@ class Solution:
 solution = Solution()
 print(solution.uniquePaths(3, 2))
 
+
+"""
+DFS（超时）。
+"""
 # class Solution:
 #     def uniquePaths(self, m: int, n: int) -> int:
-#         f = [[0]*n for _ in range(m)]
-#         global cnt
-#         cnt = 0
+#         mark = [[0]*n for _ in range(m)]
+#         global res
+#         res = 0
 #         dx, dy = [1, 0], [0, 1]
-#
 #         def dfs(i, j):
-#             global cnt
+#             global res
 #             if i == m-1 and j == n-1:
-#                 cnt += 1
+#                 res += 1
 #                 return
-#             for k in range(2):
-#                 x, y = i+dx[k], j+dy[k]
-#                 if x >= 0 and x < m and y >= 0 and y < n and not f[x][y]:
-#                     f[x][y] = 1
+#             for idx in range(2):
+#                 x, y = i + dx[idx], j + dy[idx]
+#                 if x >= 0 and x <= m-1 and y >= 0 and y <= n-1 and not mark[x][y]:
+#                     mark[x][y] = 1
 #                     dfs(x, y)
-#                     f[x][y] = 0
+#                     mark[x][y] = 0
 #         dfs(0, 0)
-#         return cnt
-
+#         return res

@@ -16,4 +16,36 @@
 输入：height = [4,2,0,3,2,5]
 输出：9
 """
+""" 题解
+     _
+    | |    _
+    | |_B | |
+    | | |A| |  
+    |_|_|_|_|
+一       last
+      top
+二     last
+    top    
+单调栈。若当前高度高于等于栈顶高度（第三个柱），则先计算A区域(height[top]-last)*(i-top-1)。然后当前高度低于栈顶高度，计算B区域(height[i]-last)*(i-top-1)。
+"""
+
+
+class Solution:
+    def trap(self, height) -> int:
+        res = 0
+        from collections import deque
+        q = deque()
+        for i in range(len(height)):
+            last = 0
+            while len(q) and height[q[-1]] <= height[i]:
+                # 长 * 高
+                res += (i-q[-1]-1) * (height[q[-1]]-last)
+                last = height[q[-1]]
+                q.pop()
+
+            if len(q):
+                res += (i-q[-1]-1) * (height[i]-last)
+            q.append(i)
+        return res
+
 

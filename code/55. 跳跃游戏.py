@@ -38,17 +38,15 @@ class Solution:
 #     def canJump(self, nums) -> bool:
 #         if len(nums) == 1:
 #             return True
-#         mark = [0] * len(nums)
-#         mark[0] = 0 if nums[0] == 0 else 1
-#         for i in range(len(nums)-1):
-#             if mark[i] == 0:
-#                 return False
-#             for j in range(i+1, i+1+nums[i]):
-#                 if j < len(nums):
-#                     mark[j] = 1
-#         return bool(mark[len(nums)-1])
+#         f = [0] * len(nums)
+#         for i in range(len(nums)-2, -1, -1):
+#             if sum(f[i+1:i+1+nums[i]]) or i+nums[i] >= len(nums)-1:
+#                 f[i] = 1
+#         if f[0]:
+#             return True
+#         return False
 
 
-nums = [1, 0,1,0]
+nums = [1, 0, 1, 0]
 solution = Solution()
 print(solution.canJump(nums))

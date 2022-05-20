@@ -20,7 +20,7 @@
 输出: [["a"]]
 """
 """ 题解
-字符串中字符和字符个数都相同字符串叫做同源字符串。
+字符串中字符和字符个数都相同字符串叫做同源字符串，eg: eat、tea、ate就是一组同源字符串。
 字典存储排序后的字符串，然后将同源的字符串存储到同一个key下。
 """
 
@@ -31,7 +31,6 @@ class Solution:
         for s in strs:
             t = ''.join(sorted(s))
             if t not in d:
-                d[t] = [s]
-            else:
-                d[t].append(s)
+                d[t] = []
+            d[t].append(s)
         return list(d.values())

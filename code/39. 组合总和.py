@@ -16,32 +16,25 @@ candidates 中的 同一个 数字可以 无限制重复被选取 。如果至�
 输出: [[2,2,2,2],[2,3,3],[3,5]]
 """
 """ 题解
-DFS。u==len(candidates)或目标数小于0为递归函数终止条件。遍历所有条件，递归并回溯。
+DFS。目标数小于0为递归函数终止条件。遍历所有条件，递归并回溯。
 """
 
 
 class Solution:
     def combinationSum(self, candidates, target: int):
-        global res, t
-        res = []
-        t = []
+        res, temp = [], []
 
         def dfs(u, target):
-            if target == 0:
-                res.append(t.copy())
+            if target <= 0:
+                if target == 0:
+                    res.append(temp.copy())
                 return
-            # 剪枝
-            if target < 0 or u == len(candidates):
-                return
-            for i in range(0, target//candidates[u]+1):
-                if i != 0:
-                    for j in range(i):
-                        t.append(candidates[u])
-
-                dfs(u+1, target-i*candidates[u])
-                if i != 0:
-                    for j in range(i):
-                        t.pop()
+            for i in range(u, len(candidates)):
+                temp.append(candidates[i])
+                target -= candidates[i]
+                dfs(i, target)
+                temp.pop()
+                target += candidates[i]
         dfs(0, target)
         return res
 

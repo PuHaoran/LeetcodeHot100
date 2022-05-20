@@ -26,8 +26,8 @@ class Solution:
     def permute(self, nums):
         n = len(nums)
         mark = [0] * n
-        global t, res
         res, t = [], []
+
         def dfs(u):
             if u == n:
                 res.append(t.copy())

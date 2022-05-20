@@ -27,15 +27,15 @@
 输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
 """
 """ 题解
-先水平翻转，再反对角线翻转。
+先按主对角线翻转，然后左右翻转；或先按副对角线反转，然后上下翻转。
 1 2 3
 4 5 6
-7 8 9 
-=》先水平翻转
-3 2 1
-6 5 4
-9 8 7
-=》再反对角线翻转
+7 8 9
+=》先主对角线翻转
+1 4 7
+2 5 8 
+3 6 9
+=》再水平翻转
 7 4 1
 8 5 2
 9 6 3
@@ -47,12 +47,13 @@ class Solution:
         """
         Do not return anything, modify matrix in-place instead.
         """
-        for i in range(len(matrix)):
-            matrix[i] = matrix[i][::-1]
         n = len(matrix)
         for i in range(n):
-            for j in range(n-1-i):
-                matrix[i][j], matrix[n-1-j][n-1-i] = matrix[n-1-j][n-1-i], matrix[i][j]
+            for j in range(i+1, n):
+                matrix[i][j], matrix[n-i-1][n-j-1] = matrix[n-i-1][n-j-1], matrix[i][j]
+        for i in range(n):
+            for j in range(i+1, n):
+                matrix[i][j], matrix[n-i-1][j] = matrix[n-i-1][j], matrix[i][j]
 
 
 matrix = [[1,2,3],
