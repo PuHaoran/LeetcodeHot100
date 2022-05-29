@@ -29,15 +29,16 @@ exention -> exection (将 'n' 替换为 'c')
 exection -> execution (插入 'u')
 """
 """ 题解
-①状态表示。f(i,j)为word1的第i个位置转化为word2的第j个位置的最少操作数。
+①状态表示。 f(i,j)，word1第i个单词变为word2第j个单词的最少操作数。
 ②状态转移。f(i,j) = min(f(i,j-1), f(i-1,j), f[i-1][j-1]+1)+1
-          f(i,j) = min(f[i][j], f[i-1][j-1]) w[i] == w[j]
-a
-ab  i=0 j=1 增加1
-ab
-a   i=1 j=0 去掉1
-ab  
-ac  i=1 j=1 更新1/0
+          f(i,j) = min(f[i][j], f[i-1][j-1]) w[i-1] == w[j-1]
+  'ca' => 'c' f(i,j) = f(i-1,j)+1 删
+     i      j
+  'aa' => 'ab' f(i,j) = f(i-1,j-1)+1 替换
+    i       j
+  'a' => 'ab' f(i,j) = f(i, j-1)+1 插
+   i       j
+  'ab' => 'ab' f(i,j) = f(i-1, j-1) 不变 (s1[i-1] == s2[j-1]，由于f从1开始故-1)
 """
 
 
