@@ -18,7 +18,6 @@
 输出：true
 """
 """ 题解
-同剑指Offer12。
 DFS。dfs中首先判断不满足的条件，然后搜索所有可能性，res=dfs() or dfs() return res。
 """
 
@@ -28,33 +27,33 @@ class Solution:
         global m, n, flag
         m, n = len(board), len(board[0])
         mark = [[0]*n for _ in range(m)]
-        flag = 0
 
-        def dfs(u, i, j):
+        def dfs(i, j, u):
             global m, n, flag
+            # 终止条件
             if u == len(word):
                 flag = 1
+                return True
+            # 不满足条件的
+            if i < 0 or i > m-1 or j < 0 or j > n-1 or mark[i][j] or board[i][j] != word[u]:
                 return
-            dx, dy = [1,-1,0,0],[0,0,1,-1]
+            dx, dy = [1, -1, 0, 0], [0, 0, 1, -1]
             for k in range(4):
                 x, y = i+dx[k], j+dy[k]
-                if x >= 0 and x < m and y >= 0 and y < n and not mark[x][y] and board[x][y] == word[u]:
-                    mark[x][y] = 1
-                    dfs(u+1, x, y)
-                    mark[x][y] = 0
+                mark[i][j] = 1
+                dfs(x, y, u+1)
+                mark[i][j] = 0
 
-        for i in range(m):
-            for j in range(n):
-                if board[i][j] == word[0]:
-                    mark[i][j] = 1
-                    dfs(1, i, j)
-                    if flag:
-                        return True
-                    mark[i][j] = 0
+        flag = 0
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                dfs(i, j, 0)
+                if flag:
+                    return True
         return False
 
 
-board = [["C","A","A"],["A","A","A"],["B","C","D"]]
+board = [["C", "A", "A"], ["A", "A", "A"], ["B", "C", "D"]]
 word = "AAB"
 solution = Solution()
 print(solution.exist(board, word))

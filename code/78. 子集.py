@@ -16,30 +16,25 @@
 输出：[[],[0]]
 """
 """ 题解
-DFS。一般u代表当前走了多少步，每一步可选择所有[1,2,3]所有情况；本题应该以当前索引之后的所有未便利元素入数组，故u为i。
+DFS。dfs包含放nums[u]元素和不放nums[u]元素两种情况，递归终止条件是u=len(nums)。
 """
 
 
 class Solution:
     def subsets(self, nums):
-        global t
-        res = []
-        t = []
-        mark = [0]*len(nums)
+        global n
+        n = len(nums)
+        res, t = [], []
         def dfs(u):
-            global t
-            res.append(t.copy())
-            for i in range(u, len(nums)):
-                if not mark[i]:
-                    mark[i] = 1
-                    t.append(nums[i])
-                    dfs(i)
-                    t.pop()
-                    mark[i] = 0
+            global n
+            if u == n:
+                res.append(t.copy())
+                return
+            # 不放
+            dfs(u+1)
+            # 放
+            t.append(nums[u])
+            dfs(u+1)
+            t.pop()
         dfs(0)
         return res
-
-
-nums = [1, 2, 3]
-solution = Solution()
-print(solution.subsets(nums))
